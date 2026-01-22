@@ -38,6 +38,24 @@
 
 ---
 
+## 🔍 Discovery Audits
+
+### T005-CANONICAL-ROOT-DISCOVERY-2026-01-22
+- 類型：Read-only Discovery
+- 日期：2026-01-22
+- 狀態：SEALED / PENDING DECISION
+- 路徑：
+  - ./AUDIT/T005-CANONICAL-ROOT-DISCOVERY-2026-01-22.md
+- 搜尋範圍：
+  - BASE-SERVICES 全目錄
+- 說明：
+  - 識別所有與 T005 商品主表相關的程式碼位置
+  - 分類為：✅ T005 核心 / ⚠️ T005 周邊 / ❌ 非 T005（僅引用）
+  - 確認 T005 核心 GAS 檔案 7 個，引用 T005 的外部模組 5 個
+  - 識別 SYNC_T005_SALES_COMPANY.js 越界寫入問題
+
+---
+
 ## ⚖️ ADR（Architecture Decision Records）
 - （尚未登錄）
 
