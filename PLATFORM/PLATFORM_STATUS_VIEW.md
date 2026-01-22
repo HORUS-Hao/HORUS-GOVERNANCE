@@ -1,7 +1,8 @@
 # Platform Status View Definition
 
-> **Version**: v2026-01.1
+> **Version**: v2026-01.2
 > **Created**: 2026-01-23
+> **Updated**: 2026-01-23
 > **Status**: ACTIVE
 > **Authority**: Architect
 > **Purpose**: 平台狀態一眼可判
@@ -39,8 +40,7 @@ View 為 DERIVED 層產物，不對平台寫入。
 | momo_status | enum | C005 | MOMO 上架狀態 |
 | pchome_status | enum | C005 | PChome 上架狀態 |
 | yahoo_status | enum | C005 | Yahoo 上架狀態 |
-| shopee_g_status | enum | C005 | 蝦皮購物狀態 |
-| shopee_k_status | enum | C005 | 蝦皮商城狀態 |
+| shopee_status | enum | C005 | 蝦皮購物狀態 |
 | overall_status | enum | calculated | 整體狀態 |
 | conflict_count | number | calculated | 衝突數量 |
 | last_checked | datetime | C005 | 最後檢查時間 |
@@ -81,8 +81,7 @@ function generatePlatformStatusView() {
       momo_status: c005Status.get(product.uid, 'MOMO') || 'UNKNOWN',
       pchome_status: c005Status.get(product.uid, 'PCHOME') || 'UNKNOWN',
       yahoo_status: c005Status.get(product.uid, 'YAHOO') || 'UNKNOWN',
-      shopee_g_status: c005Status.get(product.uid, 'SHOPEE_G') || 'UNKNOWN',
-      shopee_k_status: c005Status.get(product.uid, 'SHOPEE_K') || 'UNKNOWN',
+      shopee_status: c005Status.get(product.uid, 'SHOPEE') || 'UNKNOWN',
 
       // Calculated fields
       overall_status: calculateOverallStatus(row),
@@ -105,8 +104,7 @@ function calculateOverallStatus(row) {
     row.momo_status,
     row.pchome_status,
     row.yahoo_status,
-    row.shopee_g_status,
-    row.shopee_k_status
+    row.shopee_status
   ];
 
   // Priority: CONFLICT > SHOULD_LIST > BLOCKED > LISTED > NOT_APPLICABLE
@@ -127,7 +125,7 @@ function countConflicts(row) {
 
   // 應上架但未上
   if (row.listing_eligible) {
-    ['momo', 'pchome', 'yahoo', 'shopee_g', 'shopee_k'].forEach(function(platform) {
+    ['momo', 'pchome', 'yahoo', 'shopee'].forEach(function(platform) {
       var status = row[platform + '_status'];
       if (status === 'SHOULD_LIST' || status === 'UNKNOWN') {
         count++;
@@ -137,7 +135,7 @@ function countConflicts(row) {
 
   // 不應上架但已上
   if (!row.listing_eligible) {
-    ['momo', 'pchome', 'yahoo', 'shopee_g', 'shopee_k'].forEach(function(platform) {
+    ['momo', 'pchome', 'yahoo', 'shopee'].forEach(function(platform) {
       var status = row[platform + '_status'];
       if (status === 'LISTED') {
         count++;
@@ -172,13 +170,13 @@ PLATFORM_STATUS_{YYYY-MM-DD}.json
 
 ### 6.1 一眼可判矩陣
 
-| T005 Status | 應上架 | MOMO | PCHOME | YAHOO | SHOPEE_G | SHOPEE_K | 判定 |
-|-------------|--------|------|--------|-------|----------|----------|------|
-| 正常銷售 | YES | ✅ | ✅ | ✅ | ✅ | ✅ | OK |
-| 正常銷售 | YES | ✅ | ❌ | ✅ | ✅ | ✅ | CONFLICT (1) |
-| 正常銷售 | YES | ❌ | ❌ | ❌ | ❌ | ❌ | CONFLICT (5) |
-| 停產 | NO | ❌ | ❌ | ❌ | ❌ | ❌ | OK |
-| 停產 | NO | ✅ | ❌ | ❌ | ❌ | ❌ | CONFLICT (1) |
+| T005 Status | 應上架 | MOMO | PCHOME | YAHOO | SHOPEE | 判定 |
+|-------------|--------|------|--------|-------|--------|------|
+| 正常銷售 | YES | ✅ | ✅ | ✅ | ✅ | OK |
+| 正常銷售 | YES | ✅ | ❌ | ✅ | ✅ | CONFLICT (1) |
+| 正常銷售 | YES | ❌ | ❌ | ❌ | ❌ | CONFLICT (4) |
+| 停產 | NO | ❌ | ❌ | ❌ | ❌ | OK |
+| 停產 | NO | ✅ | ❌ | ❌ | ❌ | CONFLICT (1) |
 
 ### 6.2 顏色標示
 
@@ -216,6 +214,7 @@ PLATFORM_STATUS_{YYYY-MM-DD}.json
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-23 | v2026-01.2 | Remove SHOPEE_G/SHOPEE_K, use single SHOPEE platform code |
 | 2026-01-23 | v2026-01.1 | Initial view definition |
 
 ---

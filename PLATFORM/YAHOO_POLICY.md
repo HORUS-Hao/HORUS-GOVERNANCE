@@ -1,10 +1,21 @@
 # Yahoo 平台治理政策
 
-> **Version**: v2026-01.1
+> **Version**: v2026-01.2
 > **Created**: 2026-01-23
+> **Updated**: 2026-01-23
 > **Status**: ACTIVE
 > **Authority**: Architect
 > **Platform Code**: YAHOO
+
+---
+
+## 0. FACT Declaration
+
+| Item | Value |
+|------|-------|
+| Can become FACT | **YES** |
+| FACT Date Basis | **Asia/Taipei** |
+| FACT Date Format | yyyy-MM-dd |
 
 ---
 
@@ -142,6 +153,7 @@ T005 (SSOT) → C005 (Comparison) → Yahoo Status
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-23 | v2026-01.2 | Add FACT declaration (Can become FACT, Asia/Taipei timezone) |
 | 2026-01-23 | v2026-01.1 | Initial policy definition |
 
 ---

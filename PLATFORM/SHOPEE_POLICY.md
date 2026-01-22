@@ -1,10 +1,21 @@
 # Shopee 平台治理政策
 
-> **Version**: v2026-01.1
+> **Version**: v2026-01.2
 > **Created**: 2026-01-23
+> **Updated**: 2026-01-23
 > **Status**: ACTIVE
 > **Authority**: Architect
-> **Platform Codes**: SHOPEE_G (蝦皮購物), SHOPEE_K (蝦皮商城)
+> **Platform Code**: SHOPEE
+
+---
+
+## 0. FACT Declaration
+
+| Item | Value |
+|------|-------|
+| Can become FACT | **YES** |
+| FACT Date Basis | **Asia/Taipei** |
+| FACT Date Format | yyyy-MM-dd |
 
 ---
 
@@ -12,18 +23,21 @@
 
 | Item | Value |
 |------|-------|
-| Platform Name | 蝦皮購物 / 蝦皮商城 |
-| Platform Codes | SHOPEE_G, SHOPEE_K |
+| Platform Name | 蝦皮購物 |
+| Platform Code | SHOPEE |
 | Integration Status | GOVERNANCE_READY |
 | Data Source | C005 Crawler |
 | Write Permission | NONE (read-only observation) |
 
-### 1.1 Platform Code Distinction
+### 1.1 Seller Accounts (Runtime Only)
 
-| Code | Name | 特性 |
-|------|------|------|
-| SHOPEE_G | 蝦皮購物 | 一般賣場 |
-| SHOPEE_K | 蝦皮商城 | 品牌官方商城 |
+| Account | 說明 |
+|---------|------|
+| KATAI | 賣場帳號 1 |
+| Gusense | 賣場帳號 2 |
+
+> **Note**: 賣場帳號為 Runtime 層級資訊，不影響 platform_code。
+> FACT 層僅使用 `SHOPEE` 作為 platform_code。
 
 ---
 
@@ -55,13 +69,12 @@ BLOCKED → SHOULD_LIST (解除封鎖)
 
 ### 3.1 基本條件
 
-| Condition | SHOPEE_G | SHOPEE_K |
-|-----------|----------|----------|
-| T005 Status | 正常銷售/庫存不足 | 正常銷售/庫存不足 |
-| Product Category | Shopee 允許類別 | Shopee Mall 允許類別 |
-| Price Range | 無限制 | 符合商城價格政策 |
-| Brand Authorization | 建議有 | **必須有** |
-| Seller Level | 無限制 | 優選賣家 |
+| Condition | Requirement |
+|-----------|-------------|
+| T005 Status | `正常銷售` OR `庫存不足` |
+| Product Category | Shopee 允許類別 |
+| Price Range | 符合平台價格政策 |
+| Brand Authorization | 建議有 |
 
 ### 3.2 排除條件
 
@@ -80,9 +93,7 @@ BLOCKED → SHOULD_LIST (解除封鎖)
 ### 4.1 來源
 
 ```
-T005 (SSOT) → C005 (Comparison) → Shopee Status
-                                    ├── SHOPEE_G
-                                    └── SHOPEE_K
+T005 (SSOT) → C005 (Comparison) → Shopee Status (SHOPEE)
 ```
 
 ### 4.2 不允許操作
@@ -107,7 +118,6 @@ T005 (SSOT) → C005 (Comparison) → Shopee Status
 | SHOULD_BUT_NOT | T005 eligible + Shopee not listed |
 | SHOULD_NOT_BUT_LISTED | T005 not eligible + Shopee listed |
 | PRICE_MISMATCH | T005 price ≠ Shopee price (>5%) |
-| CROSS_PLATFORM_CONFLICT | SHOPEE_G 有但 SHOPEE_K 沒有（或反之） |
 | DATA_MISMATCH | T005 name/spec ≠ Shopee data |
 
 ### 5.2 衝突處理
@@ -121,39 +131,19 @@ T005 (SSOT) → C005 (Comparison) → Shopee Status
 
 ---
 
-## 6. Special Considerations
+## 6. Reporting
 
-### 6.1 Shopee Mall (SHOPEE_K) 特殊規則
-
-| Rule | Description |
-|------|-------------|
-| 品牌授權必要 | 必須有品牌授權才能上架 |
-| 價格一致性 | 與官網價格需一致 |
-| 庫存同步建議 | 建議與 ERP 保持同步 |
-
-### 6.2 蝦皮購物 (SHOPEE_G) 規則
-
-| Rule | Description |
-|------|-------------|
-| 彈性定價 | 可有促銷價差 |
-| 多賣場管理 | 可能有多個賣場帳號 |
-
----
-
-## 7. Reporting
-
-### 7.1 Daily Report Fields
+### 6.1 Daily Report Fields
 
 | Field | Source |
 |-------|--------|
 | Total T005 products | T005 |
 | Shopee eligible products | T005 filtered |
-| SHOPEE_G listed | C005 crawl |
-| SHOPEE_K listed | C005 crawl |
-| Combined listing rate | calculated |
+| Actually listed | C005 crawl |
+| Listing rate | calculated |
 | Conflicts | C005 comparison |
 
-### 7.2 Report Recipients
+### 6.2 Report Recipients
 
 | Role | Receives |
 |------|----------|
@@ -162,14 +152,14 @@ T005 (SSOT) → C005 (Comparison) → Shopee Status
 
 ---
 
-## 8. Governance Constraints
+## 7. Governance Constraints
 
 | Constraint | Reason |
 |------------|--------|
 | No direct API write | 避免未授權操作 |
 | No auto-sync | 需人工確認 |
 | Read-only observation | 治理級可用 |
-| Separate SHOPEE_G / SHOPEE_K tracking | 不同平台特性 |
+| Single platform_code (SHOPEE) | 統一 FACT 層識別 |
 
 ---
 
@@ -177,6 +167,7 @@ T005 (SSOT) → C005 (Comparison) → Shopee Status
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-23 | v2026-01.2 | Remove SHOPEE_G/SHOPEE_K, use single SHOPEE code; Add FACT declaration |
 | 2026-01-23 | v2026-01.1 | Initial policy definition |
 
 ---
