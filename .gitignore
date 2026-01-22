@@ -1,0 +1,17 @@
+# Google Drive / OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Google Drive shortcut files (not real files)
+*.gsheet
+*.gdoc
+*.gslides
+
+# Temporary / editor files
+*.tmp
+*.swp
+*.bak
+~$*
+
+# Do not ignore markdown or governance files

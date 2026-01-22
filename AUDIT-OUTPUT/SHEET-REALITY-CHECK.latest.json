@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "spreadsheetId": "1Dm_p_8mXYjqB_xTA0xN9NEDdx_DrWOBYS6lcKiGckc8",
+    "spreadsheetName": "S005_V005_Quotes_Database",
+    "scannedAt": "2026-01-09T14:20:22+08:00",
+    "mode": "read_only_audit",
+    "targetSheets": [
+      "Company_Profile",
+      "USERS_ACCESS",
+      "User_Company_Permission",
+      "USER_COMPANIES"
+    ],
+    "sampleSize": 50
+  },
+  "sheets": {
+    "USERS_ACCESS": {
+      "stats": {
+        "rowCount": 1000,
+        "colCount": 26,
+        "lastRow": 5,
+        "lastCol": 3,
+        "dataRows": 4
+      },
+      "headers": [
+        "email",
+        "role",
+        "status"
+      ],
+      "headerDuplicates": [],
+      "sampleRowCount": 4,
+      "distributions": {
+        "role": {
+          "exists": true,
+          "columnIndex": 1,
+          "hasValue": 4,
+          "isEmpty": 0,
+          "uniqueValues": 2,
+          "values": {
+            "APPROVER": 2,
+            "VIEWER": 2
+          }
+        },
+        "status": {
+          "exists": true,
+          "columnIndex": 2,
+          "hasValue": 4,
+          "isEmpty": 0,
+          "uniqueValues": 2,
+          "values": {
+            "ACTIVE": 3,
+            "MAAI": 1
+          }
+        }
+      }
+    },
+    "USER_COMPANIES": {
+      "stats": {
+        "rowCount": 1000,
+        "colCount": 26,
+        "lastRow": 4,
+        "lastCol": 2,
+        "dataRows": 3
+      },
+      "headers": [
+        "email",
+        "company_code"
+      ],
+      "headerDuplicates": [],
+      "sampleRowCount": 3,
+      "distributions": {
+        "company_code": {
+          "exists": true,
+          "columnIndex": 1,
+          "hasValue": 3,
+          "isEmpty": 0,
+          "uniqueValues": 3,
+          "values": {
+            "HORUS": 1,
+            "DAPANDA": 1,
+            "MAAI": 1
+          }
+        }
+      }
+    },
+    "Company_Profile": {
+      "stats": {
+        "rowCount": 1000,
+        "colCount": 26,
+        "lastRow": 4,
+        "lastCol": 13,
+        "dataRows": 3
+      },
+      "headers": [
+        "company_code",
+        "company_name",
+        "template_code",
+        "seal_file_id",
+        "mail_footer",
+        "contact_person",
+        "contact_phone",
+        "contact_email",
+        "contact_address",
+        "tax_id",
+        "stamp_image_url",
+        "stamp_file_id",
+        "supervisor_emails"
+      ],
+      "headerDuplicates": [],
+      "sampleRowCount": 3,
+      "distributions": {
+        "company_code": {
+          "exists": true,
+          "columnIndex": 0,
+          "hasValue": 3,
+          "isEmpty": 0,
+          "uniqueValues": 3,
+          "values": {
+            "HORUS": 1,
+            "DAPANDA": 1,
+            "MAAI": 1
+          }
+        },
+        "template_code": {
+          "exists": true,
+          "columnIndex": 2,
+          "hasValue": 3,
+          "isEmpty": 0,
+          "uniqueValues": 2,
+          "values": {
+            "TEMPLATE_A": 1,
+            "TEMPLATE_B": 2
+          }
+        },
+        "stamp_file_id": {
+          "exists": true,
+          "columnIndex": 11,
+          "hasValue": 1,
+          "isEmpty": 2,
+          "uniqueValues": 1,
+          "values": {
+            "1_fov9Vkv9xVlCgrnHlDcqRQCw0QsGhdn": 1
+          }
+        },
+        "seal_file_id": {
+          "exists": true,
+          "columnIndex": 3,
+          "hasValue": 0,
+          "isEmpty": 3,
+          "uniqueValues": 0,
+          "values": {}
+        }
+      }
+    },
+    "User_Company_Permission": {
+      "stats": {
+        "rowCount": 1000,
+        "colCount": 26,
+        "lastRow": 4,
+        "lastCol": 3,
+        "dataRows": 3
+      },
+      "headers": [
+        "user_email",
+        "company_code",
+        "role"
+      ],
+      "headerDuplicates": [],
+      "sampleRowCount": 3,
+      "distributions": {
+        "company_code": {
+          "exists": true,
+          "columnIndex": 1,
+          "hasValue": 3,
+          "isEmpty": 0,
+          "uniqueValues": 2,
+          "values": {
+            "HORUS": 2,
+            "DAPANDA": 1
+          }
+        },
+        "role": {
+          "exists": true,
+          "columnIndex": 2,
+          "hasValue": 3,
+          "isEmpty": 0,
+          "uniqueValues": 2,
+          "values": {
+            "admin": 2,
+            "CREATOR": 1
+          }
+        }
+      }
+    }
+  },
+  "consistency": {
+    "timestamp": "2026-01-09T14:20:22+08:00",
+    "findings": [
+      {
+        "check": "User_Company_Permission.company_code vs Company_Profile.company_code",
+        "permissionCount": 2,
+        "profileCount": 3,
+        "onlyInPermission": [],
+        "onlyInProfile": [
+          "MAAI"
+        ],
+        "consistent": true
+      },
+      {
+        "check": "USERS_ACCESS.email vs User_Company_Permission.user_email",
+        "accessCount": 4,
+        "permissionCount": 2,
+        "onlyInAccess": [
+          "hao.chang@dapanda.com.tw",
+          "hao.chang@maai.com.tw"
+        ],
+        "onlyInPermission": [],
+        "note": "Difference is informational; not all users need USERS_ACCESS entry"
+      },
+      {
+        "check": "USER_COMPANIES vs User_Company_Permission",
+        "userCompanies": {
+          "emailCount": 3,
+          "companyCount": 3
+        },
+        "permission": {
+          "emailCount": 2,
+          "companyCount": 2
+        },
+        "emailOnlyInUC": [
+          "hao.chang@dapanda.com.tw",
+          "hao.chang@maai.com.tw"
+        ],
+        "emailOnlyInPerm": [
+          "haochenchang@gmail.com"
+        ],
+        "note": "USER_COMPANIES may be legacy/parallel system"
+      },
+      {
+        "check": "Company_Profile stamp fields status",
+        "stamp_file_id": {
+          "exists": true,
+          "hasValue": 1,
+          "isEmpty": 2
+        },
+        "seal_file_id": {
+          "exists": true,
+          "hasValue": 0,
+          "isEmpty": 3,
+          "note": "seal_file_id is LEGACY - stamp_file_id is the active field"
+        }
+      }
+    ]
+  }
+}

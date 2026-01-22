@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Google Sans', Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f8f9fa;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0 0 8px 0;
+      color: #202124;
+      font-size: 18px;
+    }
+
+    .header .subtitle {
+      color: #5f6368;
+      font-size: 12px;
+    }
+
+    .btn-check {
+      width: 100%;
+      padding: 12px 24px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: #1557b0;
+    }
+
+    .btn-check:disabled {
+      background: #dadce0;
+      cursor: not-allowed;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .result-container.visible {
+      display: block;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .status-PASS {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .status-WARNINGS {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .status-BLOCKED {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    .summary {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+
+    .summary-label {
+      color: #5f6368;
+    }
+
+    .summary-value {
+      font-weight: 500;
+      color: #202124;
+    }
+
+    .check-item {
+      background: white;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .check-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .check-name {
+      font-weight: 500;
+      font-size: 13px;
+      color: #202124;
+    }
+
+    .check-status {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .check-status.PASS {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .check-status.WARNING {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .check-status.BLOCKED {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    .check-message {
+      font-size: 12px;
+      color: #5f6368;
+      line-height: 1.5;
+    }
+
+    .check-details {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #5f6368;
+      background: #f8f9fa;
+      padding: 8px;
+      border-radius: 4px;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    .governance-note {
+      margin-top: 20px;
+      padding: 12px;
+      background: #e8f0fe;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #1967d2;
+      text-align: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #5f6368;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #1a73e8;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Pre-Submit Structure Check</h2>
+    <div class="subtitle">T002 ADD-ON | Read-only Validation</div>
+  </div>
+
+  <button class="btn-check" id="btnCheck" onclick="runCheck()">
+    執行結構檢查
+  </button>
+
+  <div id="loading" class="loading" style="display: none;">
+    <div class="spinner"></div>
+    <div>檢查中...</div>
+  </div>
+
+  <div id="resultContainer" class="result-container">
+    <div id="statusBadge" class="status-badge"></div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-label">檢查時間</span>
+        <span class="summary-value" id="timestamp">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">總檢查項目</span>
+        <span class="summary-value" id="totalChecks">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">通過</span>
+        <span class="summary-value" id="passedChecks">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">警告</span>
+        <span class="summary-value" id="warningChecks">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">阻擋</span>
+        <span class="summary-value" id="blockedChecks">-</span>
+      </div>
+    </div>
+
+    <div id="checkDetails"></div>
+
+    <div class="governance-note">
+      此檢查為唯讀操作，不會修改任何資料。
+    </div>
+  </div>
+
+  <script>
+    function runCheck() {
+      const btn = document.getElementById('btnCheck');
+      const loading = document.getElementById('loading');
+      const resultContainer = document.getElementById('resultContainer');
+
+      btn.disabled = true;
+      loading.style.display = 'block';
+      resultContainer.classList.remove('visible');
+
+      google.script.run
+        .withSuccessHandler(showResults)
+        .withFailureHandler(showError)
+        .runPreSubmitCheck();
+    }
+
+    function showResults(result) {
+      const btn = document.getElementById('btnCheck');
+      const loading = document.getElementById('loading');
+      const resultContainer = document.getElementById('resultContainer');
+
+      btn.disabled = false;
+      loading.style.display = 'none';
+      resultContainer.classList.add('visible');
+
+      // Status badge
+      const statusBadge = document.getElementById('statusBadge');
+      statusBadge.textContent = result.status;
+      statusBadge.className = 'status-badge status-' + result.status;
+
+      // Summary
+      document.getElementById('timestamp').textContent =
+        new Date(result.timestamp).toLocaleString('zh-TW');
+      document.getElementById('totalChecks').textContent = result.summary.total;
+      document.getElementById('passedChecks').textContent = result.summary.passed;
+      document.getElementById('warningChecks').textContent = result.summary.warnings;
+      document.getElementById('blockedChecks').textContent = result.summary.blocked;
+
+      // Details
+      const detailsContainer = document.getElementById('checkDetails');
+      detailsContainer.innerHTML = '';
+
+      result.details.forEach(function(check) {
+        const item = document.createElement('div');
+        item.className = 'check-item';
+
+        let detailsHtml = '';
+        if (check.missing && check.missing.length > 0) {
+          detailsHtml = '<div class="check-details">缺少: ' + check.missing.join(', ') + '</div>';
+        } else if (check.issues && check.issues.length > 0) {
+          if (typeof check.issues[0] === 'string') {
+            detailsHtml = '<div class="check-details">' + check.issues.join('<br>') + '</div>';
+          } else {
+            const issueList = check.issues.map(function(i) {
+              if (i.row) {
+                return '列 ' + i.row + ': ' + i.field + ' = ' + i.value + ' (' + i.issue + ')';
+              } else if (i.rows) {
+                return i.field + ' "' + i.value + '" 重複於列 ' + i.rows.join(', ');
+              }
+              return JSON.stringify(i);
+            });
+            detailsHtml = '<div class="check-details">' + issueList.join('<br>') + '</div>';
+          }
+        }
+
+        item.innerHTML =
+          '<div class="check-header">' +
+            '<span class="check-name">' + check.name + '</span>' +
+            '<span class="check-status ' + check.severity + '">' + check.severity + '</span>' +
+          '</div>' +
+          '<div class="check-message">' + check.message + '</div>' +
+          detailsHtml;
+
+        detailsContainer.appendChild(item);
+      });
+    }
+
+    function showError(error) {
+      const btn = document.getElementById('btnCheck');
+      const loading = document.getElementById('loading');
+
+      btn.disabled = false;
+      loading.style.display = 'none';
+
+      alert('錯誤: ' + error.message);
+    }
+  </script>
+</body>
+</html>

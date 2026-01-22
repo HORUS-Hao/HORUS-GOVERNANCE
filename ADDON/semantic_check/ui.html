@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Google Sans', Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f8f9fa;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0 0 8px 0;
+      color: #202124;
+      font-size: 18px;
+    }
+
+    .header .subtitle {
+      color: #5f6368;
+      font-size: 12px;
+    }
+
+    .header .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #fef7e0;
+      color: #b06000;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .btn-check {
+      width: 100%;
+      padding: 12px 24px;
+      background: #f9ab00;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: #e69500;
+    }
+
+    .btn-check:disabled {
+      background: #dadce0;
+      cursor: not-allowed;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .result-container.visible {
+      display: block;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .status-OK {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .status-WARNING {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .status-INFO {
+      background: #e8f0fe;
+      color: #1967d2;
+    }
+
+    .summary {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 13px;
+    }
+
+    .summary-label {
+      color: #5f6368;
+    }
+
+    .summary-value {
+      font-weight: 500;
+      color: #202124;
+    }
+
+    .summary-value.warning {
+      color: #b06000;
+    }
+
+    .summary-value.info {
+      color: #1967d2;
+    }
+
+    .row-item {
+      background: white;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .row-num {
+      font-weight: 500;
+      font-size: 13px;
+      color: #202124;
+    }
+
+    .row-status {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .row-status.OK {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .row-status.WARNING {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .row-status.INFO {
+      background: #e8f0fe;
+      color: #1967d2;
+    }
+
+    .issue-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .issue-item {
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f1f3f4;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .issue-item:last-child {
+      border-bottom: none;
+    }
+
+    .issue-icon {
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .issue-icon.warning {
+      color: #f9ab00;
+    }
+
+    .issue-icon.info {
+      color: #1a73e8;
+    }
+
+    .issue-text {
+      color: #5f6368;
+      line-height: 1.4;
+    }
+
+    .no-issues {
+      text-align: center;
+      padding: 20px;
+      color: #137333;
+      font-size: 14px;
+    }
+
+    .no-issues-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .governance-note {
+      margin-top: 20px;
+      padding: 12px;
+      background: #fef7e0;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #b06000;
+      text-align: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #5f6368;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #f9ab00;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .show-all-toggle {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .show-all-toggle button {
+      background: none;
+      border: 1px solid #dadce0;
+      padding: 8px 16px;
+      border-radius: 4px;
+      color: #5f6368;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .show-all-toggle button:hover {
+      background: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Semantic Reasonableness Check</h2>
+    <div class="subtitle">T002 ADD-ON | Warning-only Validation</div>
+    <div class="badge">僅提示，不修正</div>
+  </div>
+
+  <button class="btn-check" id="btnCheck" onclick="runCheck()">
+    執行語意檢查
+  </button>
+
+  <div id="loading" class="loading" style="display: none;">
+    <div class="spinner"></div>
+    <div>檢查中...</div>
+  </div>
+
+  <div id="resultContainer" class="result-container">
+    <div id="statusBadge" class="status-badge"></div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-label">檢查時間</span>
+        <span class="summary-value" id="timestamp">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">總資料筆數</span>
+        <span class="summary-value" id="totalRows">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">正常</span>
+        <span class="summary-value" id="okRows">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">警告</span>
+        <span class="summary-value warning" id="warningRows">-</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">提示</span>
+        <span class="summary-value info" id="infoRows">-</span>
+      </div>
+    </div>
+
+    <div id="rowDetails"></div>
+
+    <div class="show-all-toggle" id="toggleContainer" style="display: none;">
+      <button onclick="toggleShowAll()">顯示所有資料列</button>
+    </div>
+
+    <div class="governance-note">
+      此為語意合理性檢查，僅顯示提示與警告。<br>
+      不會修正或寫入任何資料。
+    </div>
+  </div>
+
+  <script>
+    var allRowData = [];
+    var showingAll = false;
+
+    function runCheck() {
+      var btn = document.getElementById('btnCheck');
+      var loading = document.getElementById('loading');
+      var resultContainer = document.getElementById('resultContainer');
+
+      btn.disabled = true;
+      loading.style.display = 'block';
+      resultContainer.classList.remove('visible');
+
+      google.script.run
+        .withSuccessHandler(showResults)
+        .withFailureHandler(showError)
+        .runSemanticCheck();
+    }
+
+    function showResults(result) {
+      var btn = document.getElementById('btnCheck');
+      var loading = document.getElementById('loading');
+      var resultContainer = document.getElementById('resultContainer');
+
+      btn.disabled = false;
+      loading.style.display = 'none';
+      resultContainer.classList.add('visible');
+
+      allRowData = result.allRows || [];
+      showingAll = false;
+
+      // Status badge
+      var statusBadge = document.getElementById('statusBadge');
+      statusBadge.textContent = result.status === 'OK' ? '全部正常' :
+                                result.status === 'WARNING' ? '發現警告' : '有提示資訊';
+      statusBadge.className = 'status-badge status-' + result.status;
+
+      // Summary
+      document.getElementById('timestamp').textContent =
+        new Date(result.timestamp).toLocaleString('zh-TW');
+      document.getElementById('totalRows').textContent = result.summary.total;
+      document.getElementById('okRows').textContent = result.summary.ok;
+      document.getElementById('warningRows').textContent = result.summary.warning;
+      document.getElementById('infoRows').textContent = result.summary.info;
+
+      // Row details
+      renderRows(result.rows);
+
+      // Toggle button
+      var toggleContainer = document.getElementById('toggleContainer');
+      toggleContainer.style.display = result.summary.ok > 0 ? 'block' : 'none';
+    }
+
+    function renderRows(rows) {
+      var detailsContainer = document.getElementById('rowDetails');
+      detailsContainer.innerHTML = '';
+
+      if (rows.length === 0) {
+        detailsContainer.innerHTML =
+          '<div class="no-issues">' +
+            '<div class="no-issues-icon">✓</div>' +
+            '<div>所有資料列語意檢查通過</div>' +
+          '</div>';
+        return;
+      }
+
+      rows.forEach(function(row) {
+        var item = document.createElement('div');
+        item.className = 'row-item';
+
+        var issuesHtml = '<ul class="issue-list">';
+
+        // Warnings
+        if (row.warnings && row.warnings.length > 0) {
+          row.warnings.forEach(function(w) {
+            issuesHtml +=
+              '<li class="issue-item">' +
+                '<span class="issue-icon warning">⚠</span>' +
+                '<span class="issue-text">' + w.message + '</span>' +
+              '</li>';
+          });
+        }
+
+        // Infos
+        if (row.infos && row.infos.length > 0) {
+          row.infos.forEach(function(i) {
+            issuesHtml +=
+              '<li class="issue-item">' +
+                '<span class="issue-icon info">ℹ</span>' +
+                '<span class="issue-text">' + i.message + '</span>' +
+              '</li>';
+          });
+        }
+
+        issuesHtml += '</ul>';
+
+        item.innerHTML =
+          '<div class="row-header">' +
+            '<span class="row-num">第 ' + row.row + ' 列</span>' +
+            '<span class="row-status ' + row.status + '">' + row.status + '</span>' +
+          '</div>' +
+          issuesHtml;
+
+        detailsContainer.appendChild(item);
+      });
+    }
+
+    function toggleShowAll() {
+      showingAll = !showingAll;
+      var toggleBtn = document.querySelector('.show-all-toggle button');
+
+      if (showingAll) {
+        renderRows(allRowData);
+        toggleBtn.textContent = '僅顯示有問題的列';
+      } else {
+        var issueRows = allRowData.filter(function(r) { return r.status !== 'OK'; });
+        renderRows(issueRows);
+        toggleBtn.textContent = '顯示所有資料列';
+      }
+    }
+
+    function showError(error) {
+      var btn = document.getElementById('btnCheck');
+      var loading = document.getElementById('loading');
+
+      btn.disabled = false;
+      loading.style.display = 'none';
+
+      alert('錯誤: ' + error.message);
+    }
+  </script>
+</body>
+</html>

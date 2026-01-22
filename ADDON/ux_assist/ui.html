@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Google Sans', Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f8f9fa;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0 0 8px 0;
+      color: #202124;
+      font-size: 18px;
+    }
+
+    .header .subtitle {
+      color: #5f6368;
+      font-size: 12px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title .icon {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+
+    /* Workflow Wizard */
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .workflow-step {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .workflow-step:hover {
+      background: #e8f0fe;
+    }
+
+    .workflow-step.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .workflow-step.disabled:hover {
+      background: #f8f9fa;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 13px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .step-number.pending {
+      background: #dadce0;
+      color: #5f6368;
+    }
+
+    .step-number.done {
+      background: #137333;
+      color: white;
+    }
+
+    .step-number.ready {
+      background: #1a73e8;
+      color: white;
+    }
+
+    .step-number.blocked {
+      background: #dadce0;
+      color: #5f6368;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #202124;
+    }
+
+    .step-desc {
+      font-size: 11px;
+      color: #5f6368;
+      margin-top: 2px;
+    }
+
+    .step-status {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+    }
+
+    .step-status.done {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .step-status.pending {
+      background: #f1f3f4;
+      color: #5f6368;
+    }
+
+    .step-status.ready {
+      background: #e8f0fe;
+      color: #1967d2;
+    }
+
+    .step-status.blocked {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    /* High Risk Fields */
+    .field-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .field-badge {
+      display: flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+    }
+
+    .field-badge.high-risk {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .field-badge.canonical {
+      background: #e8f0fe;
+      color: #1967d2;
+    }
+
+    .field-badge .icon {
+      margin-right: 6px;
+      font-size: 12px;
+    }
+
+    /* Paste Guard */
+    .paste-guard {
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .paste-guard.safe {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .paste-guard.warning {
+      background: #fef7e0;
+      color: #b06000;
+    }
+
+    .paste-guard-title {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .paste-guard-list {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+
+    .paste-guard-list li {
+      margin: 4px 0;
+    }
+
+    /* Lock Suggestions */
+    .lock-suggestion {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .lock-suggestion .col {
+      font-weight: 500;
+      color: #1967d2;
+      margin-right: 8px;
+    }
+
+    .lock-suggestion .name {
+      flex: 1;
+      color: #202124;
+    }
+
+    .lock-suggestion .hint {
+      color: #5f6368;
+      font-size: 11px;
+    }
+
+    .lock-suggestion.key {
+      border-left: 3px solid #f9ab00;
+    }
+
+    /* Refresh button */
+    .btn-refresh {
+      width: 100%;
+      padding: 10px;
+      background: #f1f3f4;
+      color: #5f6368;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .btn-refresh:hover {
+      background: #e8eaed;
+    }
+
+    .btn-reset {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      color: #5f6368;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .btn-reset:hover {
+      background: #f8f9fa;
+    }
+
+    /* Info text */
+    .info-text {
+      font-size: 11px;
+      color: #5f6368;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #5f6368;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #1a73e8;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: #5f6368;
+    }
+
+    .governance-note {
+      margin-top: 16px;
+      padding: 12px;
+      background: #e8f0fe;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #1967d2;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>Operation Assist</h2>
+    <div class="subtitle">T002 ADD-ON | UX Guidance</div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <div>分析中...</div>
+  </div>
+
+  <div id="content" style="display: none;">
+    <!-- Workflow Wizard -->
+    <div class="section">
+      <div class="section-title">
+        <span class="icon">📋</span>
+        建議操作流程
+      </div>
+      <div class="workflow-steps" id="workflowSteps"></div>
+      <button class="btn-reset" onclick="resetStatus()">重置檢查狀態（新資料批次）</button>
+    </div>
+
+    <!-- Paste Guard -->
+    <div class="section" id="pasteGuardSection">
+      <div class="section-title">
+        <span class="icon">📎</span>
+        貼上提醒
+      </div>
+      <div id="pasteGuard"></div>
+    </div>
+
+    <!-- High Risk Fields -->
+    <div class="section" id="highRiskSection">
+      <div class="section-title">
+        <span class="icon">⚠️</span>
+        高風險欄位
+      </div>
+      <div class="field-list" id="highRiskFields"></div>
+      <div class="info-text">這些欄位影響成本計算，請謹慎操作</div>
+    </div>
+
+    <!-- Lock Suggestions -->
+    <div class="section" id="lockSection">
+      <div class="section-title">
+        <span class="icon">🔒</span>
+        鎖定建議
+      </div>
+      <div id="lockSuggestions"></div>
+      <div class="info-text">僅為建議，不會自動鎖定欄位</div>
+    </div>
+
+    <button class="btn-refresh" onclick="refresh()">重新分析</button>
+
+    <div class="governance-note">
+      此面板僅提供操作指引，不會修改任何資料。
+    </div>
+  </div>
+
+  <script>
+    // Load on startup
+    google.script.run
+      .withSuccessHandler(render)
+      .withFailureHandler(showError)
+      .getSheetAnalysis();
+
+    function render(data) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+
+      if (!data.hasData) {
+        document.getElementById('content').innerHTML =
+          '<div class="empty-state">' + data.message + '</div>';
+        return;
+      }
+
+      renderWorkflow(data.workflow);
+      renderPasteGuard(data.selection, data.checkStatus);
+      renderHighRiskFields(data.highRiskFields);
+      renderLockSuggestions(data.canonicalFields);
+    }
+
+    function renderWorkflow(workflow) {
+      var container = document.getElementById('workflowSteps');
+      container.innerHTML = '';
+
+      workflow.steps.forEach(function(step) {
+        var div = document.createElement('div');
+        div.className = 'workflow-step' + (step.status === 'BLOCKED' ? ' disabled' : '');
+
+        if (step.action) {
+          div.onclick = function() {
+            google.script.run[step.action]();
+          };
+        }
+
+        var statusClass = step.status.toLowerCase();
+        var statusText = {
+          'DONE': '已完成',
+          'PENDING': '待執行',
+          'READY': '可提交',
+          'BLOCKED': '需先完成前置'
+        }[step.status];
+
+        div.innerHTML =
+          '<div class="step-number ' + statusClass + '">' + step.step + '</div>' +
+          '<div class="step-content">' +
+            '<div class="step-name">' + step.name + '</div>' +
+            '<div class="step-desc">' + step.description + '</div>' +
+          '</div>' +
+          '<span class="step-status ' + statusClass + '">' + statusText + '</span>';
+
+        container.appendChild(div);
+      });
+    }
+
+    function renderPasteGuard(selection, checkStatus) {
+      var container = document.getElementById('pasteGuard');
+
+      if (!selection) {
+        container.innerHTML =
+          '<div class="paste-guard safe">' +
+            '<div class="paste-guard-title">✓ 無選取範圍</div>' +
+          '</div>';
+        return;
+      }
+
+      if (selection.isPotentialLargePaste) {
+        var warnings = [];
+        if (!checkStatus.structureCheck.hasRun) {
+          warnings.push('尚未執行結構檢查');
+        }
+        if (!checkStatus.semanticCheck.hasRun) {
+          warnings.push('尚未執行語意檢查');
+        }
+
+        if (warnings.length > 0) {
+          container.innerHTML =
+            '<div class="paste-guard warning">' +
+              '<div class="paste-guard-title">⚠ 偵測到大量選取 (' + selection.rows + ' 列)</div>' +
+              '<ul class="paste-guard-list">' +
+                warnings.map(function(w) { return '<li>' + w + '</li>'; }).join('') +
+              '</ul>' +
+              '<div>建議先完成檢查流程再進行貼上</div>' +
+            '</div>';
+        } else {
+          container.innerHTML =
+            '<div class="paste-guard safe">' +
+              '<div class="paste-guard-title">✓ 檢查已完成</div>' +
+              '<div>選取 ' + selection.rows + ' 列，可進行貼上操作</div>' +
+            '</div>';
+        }
+      } else {
+        container.innerHTML =
+          '<div class="paste-guard safe">' +
+            '<div class="paste-guard-title">✓ 選取範圍正常</div>' +
+            '<div>選取 ' + selection.rows + ' 列</div>' +
+          '</div>';
+      }
+    }
+
+    function renderHighRiskFields(highRiskFields) {
+      var container = document.getElementById('highRiskFields');
+      var section = document.getElementById('highRiskSection');
+
+      if (!highRiskFields.hasHighRisk) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      container.innerHTML = highRiskFields.found.map(function(field) {
+        return '<span class="field-badge high-risk">' +
+          '<span class="icon">⚠</span>' +
+          '<span>' + field.column + ': ' + field.name + '</span>' +
+        '</span>';
+      }).join('');
+    }
+
+    function renderLockSuggestions(canonicalFields) {
+      var container = document.getElementById('lockSuggestions');
+      var section = document.getElementById('lockSection');
+
+      if (canonicalFields.count === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+      container.innerHTML = canonicalFields.found.map(function(field) {
+        return '<div class="lock-suggestion' + (field.isKey ? ' key' : '') + '">' +
+          '<span class="col">' + field.column + '</span>' +
+          '<span class="name">' + field.name + '</span>' +
+          '<span class="hint">' + field.suggestion + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+    function refresh() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('content').style.display = 'none';
+
+      google.script.run
+        .withSuccessHandler(render)
+        .withFailureHandler(showError)
+        .getSheetAnalysis();
+    }
+
+    function resetStatus() {
+      if (confirm('確定要重置檢查狀態嗎？\n（用於開始處理新的資料批次）')) {
+        google.script.run
+          .withSuccessHandler(function() {
+            refresh();
+          })
+          .withFailureHandler(showError)
+          .resetCheckStatus();
+      }
+    }
+
+    function showError(error) {
+      document.getElementById('loading').style.display = 'none';
+      alert('錯誤: ' + error.message);
+    }
+  </script>
+</body>
+</html>
