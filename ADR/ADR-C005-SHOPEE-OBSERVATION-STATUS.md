@@ -112,7 +112,19 @@ Mail 報表
 
 ---
 
-## 7. 相關文件
+## 7. 誤解防護（2026-01-24 補充）
+
+> **重要說明**：Web UI 為 Stateless Preview Tool，顯示即時上傳比對結果，
+> 不屬於 C005 / D005 FACT，不應與 Mail 或治理報表做數量比較。
+
+| 工具 | 資料來源 | 性質 | SHOPEE 筆數 |
+|------|----------|------|-------------|
+| **Web UI** | 使用者上傳 Excel | Stateless Preview | 依上傳檔案（可能 100+） |
+| **Mail** | C005 Listing_History → D005 | Stateful FACT | 各 1 筆（Observation-Test） |
+
+---
+
+## 8. 相關文件
 
 - C005 Phase 2 Readiness
 - D005 Listing_History Schema
@@ -120,8 +132,9 @@ Mail 報表
 
 ---
 
-## 8. 變更歷史
+## 9. 變更歷史
 
 | 日期 | 變更 | 作者 |
 |------|------|------|
+| 2026-01-24 | 補充「誤解防護」說明（Web UI vs Mail 對照） | Claude |
 | 2026-01-23 | 初始建立 | Claude/GPT |
