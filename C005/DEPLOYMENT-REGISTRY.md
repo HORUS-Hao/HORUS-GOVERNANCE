@@ -9,9 +9,9 @@
 |-------|-------|
 | **WebApp URL** | https://script.google.com/macros/s/AKfycbziFY1wnb7ICJewmubHbfOjqY7zR6uUrvwA38UtWKnckAG76ppB8uVKRDu7XhHzd9rGrQ/exec |
 | **Script ID** | `1cQRaC_d6Z0mYLv8f8H6XTybvBQ59e71JZMS9DneTgvcdE0SLmqboDdDd` |
-| **Version** | v2.3.0 |
-| **Runtime Fingerprint** | `C005-v2.3.0-20260117-restore-v323` |
-| **Deployed At** | 2026-01-17 |
+| **Version** | v2.4.1 |
+| **Runtime Fingerprint** | `C005-v2.4.1-20260122-pchome-direct-read` |
+| **Deployed At** | 2026-01-22 |
 | **Deployed By** | Claude Code |
 
 ## Local Source Path
@@ -31,6 +31,14 @@ G:\我的雲端硬碟\【Claude Code】\【HORUS-PDM-Claude-Code】\10-基礎服
 | FactWriter.js | **[Phase 2 MVP]** 每日 FACT 寫入模組 |
 
 ## Version History
+
+### v2.4.1 (2026-01-22) - PCHOME Direct Read Fix
+- **FIX**: getPchomeScanResult() 改為直接從 Drive 資料夾讀取
+- 原因：舊版使用 getComparisonHistoryList() 返回聚合數據，導致 PCHOME 與 MOMO 數據相同
+- 資料來源：上架品項資料夾 + 草稿品項資料夾（雙檔案系統）
+- 新增 PCHOME_FOLDER_CONFIG 常數
+- 新增 readPchomeFolderSkus_() 私有函數
+- 計算規則：listed = 上架資料夾 SKU，unlisted = 草稿中不在上架的 SKU
 
 ### v2.4.0 (2026-01-22) - Phase 2 MVP: FactWriter
 - **NEW**: FactWriter.js - 每日平台 FACT 寫入模組
