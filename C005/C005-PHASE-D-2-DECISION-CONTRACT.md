@@ -1,7 +1,7 @@
 # C005 Phase D-2｜Decision Contract & SLA
 
 > 治理層級：Decision Contract / SLA
-> 狀態：Draft v0.1
+> 狀態：Draft v0.2 (Implementation Complete)
 > 日期：2026-01-24
 > 前置：C005-PHASE-D-1-DECISION-DEPENDENCY.md (Frozen)
 
@@ -163,11 +163,44 @@ Eligibility Filter 啟用須滿足以下**全部條件**：
 
 ---
 
-## 七、變更紀錄
+## 七、Phase D-2 實作落地清單
+
+### 7.1 已實作功能
+
+| 功能 | 檔案 | 狀態 |
+|------|------|------|
+| Eligibility Matching Report | C005_SyncJob.js | ✅ 完成 |
+| D005 Anomaly Guard (WARN-only) | C005_SyncJob.js | ✅ 完成 |
+| Dry-Run Smoke Test | C005_SyncJob.js | ✅ 完成 |
+| NO_FACT_TODAY 語意修正 | C005_MailService.js | ✅ 完成 |
+| Eligibility Disclaimer 加強 | C005_MailService.js | ✅ 完成 |
+
+### 7.2 關鍵函式
+
+| 函式名稱 | 用途 |
+|----------|------|
+| `generateEligibilityMatchingReport_()` | 產生 T005↔D005 SKU 匹配報告 |
+| `checkD005Anomalies_(overview, prevOverview)` | D005 資料合理性檢測 |
+| `runDailySnapshot_DRYRUN()` | 不寄信的完整流程測試 |
+| `manualGenerateEligibilityReport()` | 手動觸發匹配報告 |
+| `manualCheckD005Anomalies()` | 手動觸發異常檢測 |
+
+### 7.3 USE_ELIGIBILITY_FILTER 狀態
+
+```
+USE_ELIGIBILITY_FILTER = false  // Phase D-2 不啟用
+```
+
+啟用條件：match_rate >= 99% 且 Architect 核准
+
+---
+
+## 八、變更紀錄
 
 | 版本 | 日期 | 變更內容 |
 |------|------|----------|
 | v0.1 | 2026-01-24 | 初版建立（Draft） |
+| v0.2 | 2026-01-24 | 實作完成（Eligibility Report, Anomaly Guard, NO_FACT semantic） |
 
 ---
 
