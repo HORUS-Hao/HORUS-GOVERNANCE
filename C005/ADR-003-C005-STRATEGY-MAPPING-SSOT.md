@@ -97,7 +97,7 @@ T005 (商品主檔)
 
 | 欄位名稱 | Column | 資料型別 | 必填 | 說明 |
 |----------|--------|----------|------|------|
-| `product_id` | A | string | ✅ 是 | 對應 T005.UID 或 T005.商品型號 |
+| `product_id` | A | string | ✅ 是 | 對應 T005.UID（HORUS Canonical Primary Key）|
 | `brand` | B | string | ✅ 是 | 品牌名稱（冗餘欄位，便於檢視）|
 | `platform_code` | C | enum | ✅ 是 | 平台代碼 |
 | `strategy_scope` | D | enum | ✅ 是 | 策略範圍（ALLOW/DENY/OPTIONAL）|
@@ -149,7 +149,38 @@ T005 (商品主檔)
 | 預設行為 | 若商品無對應記錄，預設為 `ALLOW`（全平台可上）|
 | 生效條件 | `status = APPROVED` 且在 `effective_start_date` ~ `effective_end_date` 區間內 |
 
-#### 2.4 Sheet 命名建議
+#### 2.4 Clarification: product_id 語意說明
+
+> **v1.2 新增 (2026-01-24)**：本節釐清 `product_id` 欄位的確切語意，無行為變更。
+
+##### 2.4.1 為何 product_id 必須是 t005_uid
+
+| 原因 | 說明 |
+|------|------|
+| **唯一性保證** | T005.UID 為系統自動產生的唯一識別碼，不會重複 |
+| **穩定性保證** | UID 一旦建立不會變更，商品型號可能因業務需求調整 |
+| **一致性保證** | 與 C005 Config.js `T005_CANONICAL_FIELDS.PRIMARY_KEY = 'UID'` 一致 |
+| **關聯完整性** | 可與 T005 進行可靠的 JOIN 操作 |
+
+##### 2.4.2 商品型號的角色定位
+
+| 項目 | 說明 |
+|------|------|
+| **可作為** | 輔助比對、人工識別、Excel 匯出時的可讀標籤 |
+| **不可作為** | JOIN key、複合主鍵的一部分、程式邏輯中的識別碼 |
+
+##### 2.4.3 與 T050-A Platform Product Mapping 的一致性
+
+本 ADR 的 `product_id` 欄位定義與 T050-A 治理規範一致：
+
+```
+Strategy_Mapping.product_id = T050-A.t005_uid = T005.UID
+```
+
+跨表關聯時，統一使用 `t005_uid` / `UID` 作為 JOIN key，
+**禁止使用商品型號進行 JOIN 操作**。
+
+#### 2.5 Sheet 命名建議
 
 ```
 Sheet 名稱: Strategy_Mapping
@@ -386,17 +417,22 @@ ADR-003 核准後：
 | `ADR-002-C005-PHASE3-STRATEGY-UNIVERSE.md` | Phase 3 Strategy Universe 定義（SEALED）|
 | `R020_DATA_CONTRACT_v1.0.md` | Platform Code 定義來源 |
 | `T005_SHEET_SCHEMA_CANONICAL_v2026-01.md` | T005 Schema（商品主檔）|
+| `T050-A-Platform-Product-Mapping-PCHOME.md` | T050-A 平台商品映射定義 |
+| `T050-A-GOVERNANCE.md` | T050-A 治理規範 |
 
 ---
 
 ## Appendix A: Strategy_Mapping Sheet 範例
 
+> **Note**: `product_id` 欄位值為 T005.UID 格式（示意值），**不代表商品型號**。
+> 實際填寫時請使用 T005 工作表中的 UID 欄位值。
+
 ```
-| product_id | brand  | platform_code | strategy_scope | effective_start_date | effective_end_date | input_by | input_date | status   | approved_by | approved_date | note          |
-|------------|--------|---------------|----------------|----------------------|--------------------|----------|------------|----------|-------------|---------------|---------------|
-| SKU-001    | BrandA | MOMO          | ALLOW          |                      |                    | PM-王     | 2026-01-22 | APPROVED | OPS-李      | 2026-01-22    |               |
-| SKU-001    | BrandA | SHOPEE        | DENY           | 2026-02-01           |                    | PM-王     | 2026-01-22 | APPROVED | OPS-李      | 2026-01-22    | 品牌限制      |
-| SKU-002    | BrandB | YAHOO         | OPTIONAL       |                      | 2026-06-30         | PM-陳     | 2026-01-22 | DRAFT    |             |               | 試賣期        |
+| product_id       | brand  | platform_code | strategy_scope | effective_start_date | effective_end_date | input_by | input_date | status   | approved_by | approved_date | note          |
+|------------------|--------|---------------|----------------|----------------------|--------------------|----------|------------|----------|-------------|---------------|---------------|
+| UID-20260101-001 | BrandA | MOMO          | ALLOW          |                      |                    | PM-王     | 2026-01-22 | APPROVED | OPS-李      | 2026-01-22    |               |
+| UID-20260101-001 | BrandA | SHOPEE        | DENY           | 2026-02-01           |                    | PM-王     | 2026-01-22 | APPROVED | OPS-李      | 2026-01-22    | 品牌限制      |
+| UID-20260115-042 | BrandB | YAHOO         | OPTIONAL       |                      | 2026-06-30         | PM-陳     | 2026-01-22 | DRAFT    |             |               | 試賣期        |
 ```
 
 ---
@@ -431,6 +467,7 @@ strategy_listing_rate(MOMO) = matched_count / 2740
 |------|---------|--------|--------|
 | 2026-01-22 | v1.0 | 初版草稿 | Claude Code |
 | 2026-01-22 | v1.1 | 狀態改為 APPROVED | Claude Code |
+| 2026-01-24 | v1.2 | Clarify product_id semantic (no behavior change) | Claude Code |
 
 ---
 
