@@ -1,10 +1,20 @@
 # T050-B Replenishment FACT Snapshot
 
-> **Status**: Draft
+> **Status**: FROZEN
+> **Effective Date**: 2026-01-24
+> **Governance Level**: Canonical
 > **Phase**: T050-B
-> **Version**: v0.1
+> **Version**: v1.0
 > **Created**: 2026-01-24
 > **Author**: Claude Code (Architect Mode)
+
+---
+
+> **Freeze Notice**
+>
+> 本文件已凍結為 T050-B 治理基準版本。
+> 後續任何變更需透過新版本（v1.x）或新 Phase（T050-C）進行。
+> 直接修改本文件屬違規行為，需經 Architect 審核。
 
 ---
 
@@ -54,23 +64,52 @@
 |---------|---------|-----|------|------|
 | `platform_inventory_qty` | INTEGER | | Platform | 平台當前庫存數量 |
 | `platform_inventory_timestamp` | TIMESTAMP | | Platform | 庫存數據擷取時間 |
-| `platform_listing_status` | STRING | | Platform | 平台上架狀態（上架/下架/缺貨...） |
+| `platform_listing_status` | ENUM | | Platform | 平台上架狀態（標準化 ENUM，見下方定義） |
+
+#### platform_listing_status ENUM 定義（v1.0 裁定）
+
+| 值 | 說明 |
+|----|------|
+| `LISTED` | 已上架、販售中 |
+| `UNLISTED` | 已下架、停止販售 |
+| `OUT_OF_STOCK` | 缺貨中 |
+| `PENDING` | 待審核、處理中 |
+| `UNKNOWN` | 無法判斷或資料缺失 |
+
+> **Note**: 各平台原始狀態值需透過「獨立平台 Config」進行 mapping。
+> Status mapping 不屬於 T050-A 職責範圍。
 
 ### 2.4 平台銷售欄位（Optional）
 
 | 欄位名稱 | 資料型別 | 必填 | 來源 | 說明 |
 |---------|---------|-----|------|------|
-| `platform_sales_qty_7d` | INTEGER | | Platform | 近 7 日銷售數量 |
-| `platform_sales_qty_30d` | INTEGER | | Platform | 近 30 日銷售數量 |
+| `platform_sales_qty_7d` | INTEGER | | Platform | 過去 7 個完整日曆天銷售數量（不含今日） |
+| `platform_sales_qty_30d` | INTEGER | | Platform | 過去 30 個完整日曆天銷售數量（不含今日） |
 | `platform_sales_timestamp` | TIMESTAMP | | Platform | 銷售數據擷取時間 |
+
+#### 銷售數量計算區間定義（v1.0 裁定）
+
+| 欄位 | 計算區間 | 說明 |
+|------|---------|------|
+| `platform_sales_qty_7d` | `TODAY - 7` 至 `TODAY - 1` | 不含今日，避免當日資料不完整 |
+| `platform_sales_qty_30d` | `TODAY - 30` 至 `TODAY - 1` | 固定日曆天數，避免月份天數差異 |
 
 ### 2.5 ERP 庫存欄位（Optional）
 
 | 欄位名稱 | 資料型別 | 必填 | 來源 | 說明 |
 |---------|---------|-----|------|------|
-| `erp_inventory_qty` | INTEGER | | ERP | ERP 系統當前庫存數量 |
-| `erp_warehouse` | STRING | | ERP | ERP 倉庫名稱 |
+| `erp_inventory_qty` | INTEGER | | ERP | ERP 系統當前庫存數量（**加總模式**） |
+| `erp_warehouse` | STRING | | ERP | 固定值：`ALL` 或 `CONSOLIDATED` |
 | `erp_inventory_timestamp` | TIMESTAMP | | ERP | ERP 數據擷取時間 |
+
+#### ERP 倉庫處理策略（v1.0 裁定）
+
+| 項目 | 裁定 |
+|------|------|
+| **模式** | 加總模式（Consolidated） |
+| **erp_inventory_qty** | 所有倉庫庫存加總值 |
+| **erp_warehouse** | 固定標記 `ALL` 或 `CONSOLIDATED` |
+| **分倉明細** | Out of Scope（如需分倉，由未來 T050-C 或上游 ERP 報表處理） |
 
 ### 2.6 計算欄位
 
@@ -78,6 +117,21 @@
 |---------|---------|-----|------|------|
 | `inventory_gap` | INTEGER | | Calculated | ERP 庫存 - 平台庫存（**僅數值差異，非建議量**） |
 | `data_quality_flag` | STRING | | Calculated | 資料品質標記（complete/partial/missing） |
+
+#### inventory_gap 語意定義（v1.0 裁定）
+
+```
+inventory_gap = erp_inventory_qty - platform_inventory_qty
+```
+
+| 值 | 語意 | 說明 |
+|----|------|------|
+| **正值** | 有餘裕可補貨 | ERP 庫存 > 平台庫存 |
+| **零值** | 庫存一致 | 無需補貨 |
+| **負值** | 異常警示 | 平台庫存 > ERP 庫存（超賣或 ERP 未同步） |
+
+> **Note**: `inventory_gap` 僅為數值差異，不代表建議補貨量。
+> 補貨建議邏輯由 T060 負責。
 
 ### 2.7 Metadata 欄位
 
@@ -177,17 +231,19 @@ JOIN OtherTable other
 
 ---
 
-## 7. 語意不確定欄位
+## 7. 語意裁定紀錄（v1.0）
 
-> **Note**: 以下欄位的精確定義需進一步釐清。
+> **Note**: 以下欄位已於 v1.0 完成語意裁定。
 
-| 欄位 | 不確定項目 | 待釐清問題 |
-|------|-----------|-----------|
-| `platform_sales_qty_7d` | 計算區間 | 是「過去 7 天」還是「本週」？含今日否？ |
-| `platform_sales_qty_30d` | 計算區間 | 是「過去 30 天」還是「本月」？ |
-| `erp_warehouse` | 多倉庫處理 | 若有多倉庫，是加總還是分列？ |
-| `inventory_gap` | 負值語意 | 負值代表平台庫存 > ERP？還是需補貨？ |
-| `platform_listing_status` | ENUM 值 | 各平台狀態值不同，如何標準化？ |
+| 欄位 | 原不確定項目 | 裁定結果 |
+|------|-------------|---------|
+| `platform_sales_qty_7d` | 計算區間 | ✅ 過去 7 個完整日曆天（不含今日） |
+| `platform_sales_qty_30d` | 計算區間 | ✅ 過去 30 個完整日曆天（不含今日） |
+| `erp_warehouse` | 多倉庫處理 | ✅ 加總模式，固定值 `ALL` / `CONSOLIDATED` |
+| `inventory_gap` | 負值語意 | ✅ 負值 = 平台庫存 > ERP（異常警示） |
+| `platform_listing_status` | ENUM 值 | ✅ 標準化：LISTED / UNLISTED / OUT_OF_STOCK / PENDING / UNKNOWN |
+
+> **Status Mapping**: 各平台原始值需透過「獨立平台 Config」進行 mapping，非 T050-A 職責。
 
 ---
 
@@ -208,6 +264,7 @@ JOIN OtherTable other
 | 版本 | 日期 | 變更說明 |
 |-----|------|---------|
 | v0.1 | 2026-01-24 | 初版 Draft |
+| v1.0 | 2026-01-24 | Freeze T050-B canonical baseline（含語意裁定） |
 
 ---
 
