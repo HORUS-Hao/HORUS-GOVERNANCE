@@ -1,10 +1,20 @@
 # T050-A Governance Document
 
-> **Status**: Draft
+> **Status**: FROZEN
+> **Effective Date**: 2026-01-24
+> **Governance Level**: Canonical
 > **Phase**: T050-A
-> **Version**: v0.1
+> **Version**: v1.0
 > **Created**: 2026-01-24
 > **Author**: Claude Code (Architect Mode)
+
+---
+
+> **Freeze Notice**
+>
+> 本文件已凍結為 T050-A 治理基準版本。
+> 後續任何變更需透過新版本（v1.x）或新 Phase（T050-B）進行。
+> 直接修改本文件屬違規行為，需經 Architect 審核。
 
 ---
 
@@ -144,7 +154,7 @@ JOIN SomeTable other
 ### 5.2 與 C005 Strategy Mapping 的關係
 
 - C005 Strategy Mapping 使用 `product_id + platform_code`
-- **待釐清**：C005 的 `product_id` 應為 `t005_uid`
+- **已釐清**：C005 的 `product_id` = `t005_uid`（ADR-003 v1.2）
 - 整合時透過 `t005_uid` 關聯
 
 ### 5.3 與 R020 的關係
@@ -180,6 +190,7 @@ JOIN SomeTable other
 | 版本 | 日期 | 變更說明 |
 |-----|------|---------|
 | v0.1 | 2026-01-24 | 初版 Draft |
+| v1.0 | 2026-01-24 | Freeze T050-A governance baseline |
 
 ---
 

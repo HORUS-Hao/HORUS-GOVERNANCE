@@ -1,9 +1,19 @@
 # T050-A-Platform-Product-Mapping-PCHOME
 
-> **Status**: Draft (Not Effective Yet)
-> **Version**: v0.1
+> **Status**: FROZEN
+> **Effective Date**: 2026-01-24
+> **Governance Level**: Canonical
+> **Version**: v1.0
 > **Created**: 2026-01-24
 > **Author**: Claude Code (Architect Mode)
+
+---
+
+> **Freeze Notice**
+>
+> 本文件已凍結為 T050-A 治理基準版本。
+> 後續任何變更需透過新版本（v1.x）或新 Phase（T050-B）進行。
+> 直接修改本文件屬違規行為，需經 Architect 審核。
 
 ---
 
@@ -101,6 +111,7 @@ PK: (platform_code, platform_product_id)
 | 版本 | 日期 | 變更說明 |
 |-----|------|---------|
 | v0.1 | 2026-01-24 | 初版 Draft |
+| v1.0 | 2026-01-24 | Freeze T050-A governance baseline |
 
 ---
 

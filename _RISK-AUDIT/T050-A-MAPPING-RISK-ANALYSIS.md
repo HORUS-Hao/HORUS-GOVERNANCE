@@ -1,9 +1,20 @@
 # T050-A Mapping Risk Analysis
 
-> **Status**: Draft
+> **Status**: FROZEN
+> **Effective Date**: 2026-01-24
+> **Governance Level**: Canonical
 > **Audit Date**: 2026-01-24
 > **Auditor**: Claude Code (Architect Mode)
 > **Scope**: 既有 Mapping / 對照表風險盤點
+> **Version**: v1.0
+
+---
+
+> **Freeze Notice**
+>
+> 本文件已凍結為 T050-A 治理基準版本。
+> 後續任何變更需透過新版本（v1.x）或新 Phase（T050-B）進行。
+> 直接修改本文件屬違規行為，需經 Architect 審核。
 
 ---
 
@@ -179,6 +190,7 @@
 |-----|------|---------|
 | v0.1 | 2026-01-24 | 初版 Draft |
 | v0.2 | 2026-01-24 | Mark C005 product_id ambiguity as resolved (ADR-003 v1.2) |
+| v1.0 | 2026-01-24 | Freeze T050-A governance baseline |
 
 ---
 
