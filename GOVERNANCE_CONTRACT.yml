@@ -1,5 +1,50 @@
 GOVERNANCE_CONTRACT:
-  CURRENT_PHASE: 5-A
+  CURRENT_PHASE: 5-B
+
+  PHASE_5B:
+    MODE: Minimal_Decision_Activation
+    INTENT:
+      - PRESENTATION_LAYER_ONLY
+      - NO_STRATEGY_DECISION
+      - NO_ACCOUNTABILITY_ASSIGNMENT
+
+    ALLOWED_T005_FIELDS:
+      DISPLAY_OK:
+        - UID
+        - 供應商
+        - 品牌
+        - 商品型號
+        - 商品名稱
+        - 商品大類
+        - 商品中類
+        - 商品小類
+        - 國際條碼
+      DISPLAY_ONLY_NO_INTERPRET:
+        - 商品狀態
+        - 付款條件
+      FORBIDDEN:
+        - 商品歸屬公司
+        - 可銷售公司
+
+    ALLOWED_OUTPUT:
+      - Mail supplementary text
+      - Mail table columns (UID/brand/model)
+      - UI Tooltip
+      - Log output
+
+    FORBIDDEN_OUTPUT:
+      - Listing rate calculation
+      - Listed/unlisted judgment
+      - Eligibility result
+      - Listing_History write
+      - strategy_mapping decision
+
+    DISCLAIMER: "※ 本郵件所列商品資訊僅供參考，不構成上架義務或責任歸屬判定。"
+
+    NOTE:
+      - Phase 5-B affects Presentation Layer ONLY.
+      - No strategy decision, no accountability assignment.
+      - If request involves Eligibility/Listing/Strategy, STOP immediately.
 
   PHASE_5A:
     MODE: Manual_Strategy_Registry
