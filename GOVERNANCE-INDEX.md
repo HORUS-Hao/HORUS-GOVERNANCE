@@ -143,6 +143,7 @@ ls HORUS-GOVERNANCE/GOVERNANCE-INDEX.md
 | Phase 5-B 定義 | `STRATEGY/PHASE5B-MINIMAL-DECISION-ACTIVATION.md` | Presentation Layer Only | DONE |
 | Phase 5-C Readiness | `STRATEGY/PHASE5C-READINESS-AND-BLAST-RADIUS.md` | 啟用前硬門檻與風險模擬 | PRE-ACTIVATION |
 | SSOT 定義 | `STRATEGY/C005-STRATEGY-MAPPING-SSOT-DEFINITION.md` | strategy_mapping 結構與治理 | STRUCTURE COMPLETE |
+| Phase 6 Completion | `STRATEGY/PHASE6-COMPLETION-REPORT.md` | Presentation-only, non-computational | **COMPLETE** |
 | Phase 5 Reserved | `STRATEGY/STRATEGY-MAPPING-PHASE5-RESERVED.md` | 原始保留聲明 | SUPERSEDED |
 
 **注意：Strategy 相關文件為治理定義，非 runtime 啟用。Phase 5-C 需滿足 Readiness Gate 才可啟用。**
