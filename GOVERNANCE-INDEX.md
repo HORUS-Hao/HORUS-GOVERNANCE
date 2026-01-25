@@ -135,11 +135,30 @@ ls HORUS-GOVERNANCE/GOVERNANCE-INDEX.md
 | Data Quality Gap | `HORUS-GOVERNANCE/DATA-QUALITY/FACT-COVERAGE-GAP-INDEX.md` | FACT 缺口盤點 |
 | V005 Baseline | `HORUS-GOVERNANCE/V005/V005-BASELINE-POINTER.md` | V005 基線指標 |
 
-### 6.4 T002
+### 6.4 Strategy Governance (Phase 5)
+
+| 文件 | 位置 | 用途 | 狀態 |
+|------|------|------|------|
+| Phase 5-A 定義 | `STRATEGY/STRATEGY-MAPPING-PHASE5A-READONLY-JOIN.md` | Read-only Join（REF 欄位顯示） | DONE |
+| Phase 5-B 定義 | `STRATEGY/PHASE5B-MINIMAL-DECISION-ACTIVATION.md` | Presentation Layer Only | DONE |
+| Phase 5-C Readiness | `STRATEGY/PHASE5C-READINESS-AND-BLAST-RADIUS.md` | 啟用前硬門檻與風險模擬 | PRE-ACTIVATION |
+| SSOT 定義 | `STRATEGY/C005-STRATEGY-MAPPING-SSOT-DEFINITION.md` | strategy_mapping 結構與治理 | STRUCTURE COMPLETE |
+| Phase 5 Reserved | `STRATEGY/STRATEGY-MAPPING-PHASE5-RESERVED.md` | 原始保留聲明 | SUPERSEDED |
+
+**注意：Strategy 相關文件為治理定義，非 runtime 啟用。Phase 5-C 需滿足 Readiness Gate 才可啟用。**
+
+### 6.5 T002
 
 - T002-WORKING-SHEETS.md — WK working sheets boundary (non-canonical, non-sync)
 
-### 6.5 External VIEWER Hard Gate（2026-01-09）
+### 6.6 T005 Governance
+
+| 文件 | 角色 | 適用範圍 | 狀態 |
+|------|------|----------|------|
+| `T005_SHEET_SCHEMA_CANONICAL_v2026-01.md` | T005 Schema 定義 | 所有 T005 消費者 | Active |
+| `T005-LISTING-ELIGIBILITY-RULES.md` | 定義上架資格母數語義 (listing-eligible universe) | C005 / R020 / MAIL interpretation | **Phase 1 – Definition only, no implementation**
+
+### 6.7 External VIEWER Hard Gate（2026-01-09）
 
 | 文件 | 位置 | 用途 |
 |------|------|------|
