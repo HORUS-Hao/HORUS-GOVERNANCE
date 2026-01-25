@@ -1,11 +1,19 @@
 # T005 Status Normalization Governance
 
 > **TYPE**: GOVERNANCE / NORMALIZATION
-> **STATUS**: ACTIVE
-> **PHASE**: 3 (Normalization Framework)
+> **STATUS**: CANONICAL | READ-ONLY | NO-MUTATION
+> **PHASE**: 4 (Structural Schema Layer)
 > **MUTATION**: NONE (Read-Only to System)
 > **Date**: 2026-01-25
 > **Architect**: Claude Code
+
+---
+
+## Phase 4 Declaration
+
+> **This document defines CANONICAL SCHEMA ONLY.**
+> **No business logic, no inference, no strategy mapping.**
+> **Phase 5 (Strategy Override) remains RESERVED.**
 
 ---
 
@@ -164,11 +172,45 @@ summary.normalizationCoverage = {
 
 ---
 
-## 8. Changelog
+## 8. Schema Metadata (Phase 4)
+
+### 8.1 Column Schema Definition
+
+| Column | Type | Nullable | Immutable | Description |
+|--------|------|----------|-----------|-------------|
+| `raw_status` | STRING | NO | YES | T005 原始狀態值（Primary Key）|
+| `normalized_status` | ENUM | NO | NO | 正規化狀態（ACTIVE/OUT_OF_STOCK/DISCONTINUED/PENDING/UNKNOWN）|
+| `eligible` | BOOLEAN | NO | NO | 是否可上架 |
+| `phase` | INTEGER | NO | YES | 啟用 Phase（>= 3）|
+| `source` | STRING | NO | NO | 來源（human/legacy/vendor）|
+| `note` | STRING | YES | NO | 人類備註 |
+| `last_reviewed` | DATE | NO | NO | 最後審核日期 |
+
+### 8.2 Access Pattern
+
+| Operation | Allowed | Description |
+|-----------|---------|-------------|
+| READ | ✅ | 系統可讀取 schema 定義 |
+| WRITE | ❌ | 僅人工維護 |
+| INFER | ❌ | 禁止自動推導 |
+| MUTATE | ❌ | 禁止程式修改 |
+
+### 8.3 Future Module Dependencies (Phase 4 Documentation Only)
+
+| Module | Dependency Type | Phase |
+|--------|-----------------|-------|
+| C005 EligibilityService | READ schema | 4+ |
+| R020 (Future) | READ schema | 5+ |
+| T030 (Future) | READ schema | 5+ |
+
+---
+
+## 9. Changelog
 
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-01-25 | 1.0.0 | Initial - Phase 3 Normalization Framework |
+| 2026-01-25 | 2.0.0 | Phase 4 - CANONICAL / READ-ONLY / Schema Metadata |
 
 ---
 
