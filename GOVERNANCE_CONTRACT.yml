@@ -1,0 +1,28 @@
+GOVERNANCE_CONTRACT:
+  CURRENT_PHASE: 6
+
+  PHASE_6:
+    INTENT:
+      - READ_ONLY_USAGE
+      - FACT_PROJECTION
+      - OBSERVATION_ONLY
+
+    ALLOWED:
+      - Listing_History aggregation
+      - Platform-level listing rate
+      - Read-only accessors
+      - Mail rendering from FACT tables
+
+    FORBIDDEN:
+      - SKU_LEVEL_LISTING_STATUS
+      - STRATEGY_MAPPING_USAGE
+      - ELIGIBILITY_INFERENCE
+      - CROSS_MODULE_STATUS_INFERENCE
+
+    NOTE:
+      - Items listed as FORBIDDEN are intentional non-implementations.
+      - Do NOT treat them as missing features or technical debt.
+
+  AI_INSTRUCTION:
+    - If a task suggests implementing FORBIDDEN items,
+      STOP and request Architect confirmation.
