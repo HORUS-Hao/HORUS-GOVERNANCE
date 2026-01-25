@@ -1,5 +1,40 @@
 GOVERNANCE_CONTRACT:
-  CURRENT_PHASE: 6
+  CURRENT_PHASE: 5-A
+
+  PHASE_5A:
+    MODE: Manual_Strategy_Registry
+    INTENT:
+      - READ_ONLY_JOIN
+      - T005_REFERENCE_DISPLAY
+      - HUMAN_REGISTRY_ONLY
+
+    ALLOWED:
+      - strategy_mapping read access
+      - T005 lookup for display (VLOOKUP/XLOOKUP/QUERY)
+      - REF columns for human reference
+
+    FORBIDDEN:
+      - T005 write-back
+      - REF column inference (if/switch)
+      - Mail/Listing/Eligibility integration
+      - Automated strategy decisions
+
+    JOIN_KEY:
+      primary: strategy_mapping.product_id -> T005.UID
+      fallback_display: [brand, product_model]
+
+    REF_COLUMNS:
+      - "[REF] 商品名稱"
+      - "[REF] 商品大類"
+      - "[REF] 商品中類"
+      - "[REF] 商品小類"
+      - "[REF] 商品歸屬公司"
+      - "[REF] 可銷售公司"
+
+    NOTE:
+      - REF columns are for human reference only.
+      - Do NOT use REF columns for logic, inference, or validation.
+      - strategy_mapping remains a Manual Registry, not an automation source.
 
   PHASE_6:
     INTENT:
