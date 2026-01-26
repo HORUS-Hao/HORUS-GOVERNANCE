@@ -24,12 +24,32 @@
 
 ## Alignment Audits
 
-### T005-GOVERNANCE-ALIGNMENT-AUDIT
+### T005-GOVERNANCE-ALIGNMENT-AUDIT-2026-01-22
+- **Type**: Governance Alignment Audit
+- **Date**: 2026-01-22
+- **Scope**: Blind Audit vs HORUS-GOVERNANCE 治理宣告
+- **Status**: SEALED / PENDING DECISION
+- **Evidence**: T005/AUDIT/T005-GOVERNANCE-ALIGNMENT-AUDIT-2026-01-22.md
+- **Input Sources**:
+  - T005-READONLY-AUDIT-2026-01-22.md
+  - T005_SHEET_SCHEMA_CANONICAL_v2026-01.md
+  - T005_DATA_CONTRACT_v1.0.md (DEPRECATED)
+  - V005/MODULE-REGISTRY/T005.md
+  - V005/MODULE-REGISTRY/D005.md
+  - V005/ARCHITECTURE/ADR-0001-T005-T002-B.md
+- **Description**:
+  - 比對 Blind Audit 事實與治理宣告
+  - 識別 7 項不一致、11 項治理缺口
+  - 核心衝突：D005 唯一寫入宣告 vs T005 GAS 實際寫入
+  - Schema 欄位數衝突：Canonical 24 欄 vs Main.gs 28 欄
+  - 提供 11 項裁定待辦
+
+### T005-GOVERNANCE-ALIGNMENT-AUDIT (Historical)
 - **Type**: Alignment Audit
 - **Path**: T005/T005-GOVERNANCE-ALIGNMENT-AUDIT.md
-- **Status**: REFERENCE
+- **Status**: REFERENCE (Historical)
 - **Description**:
-  - 歷史對齊審計文件
+  - 歷史對齊審計文件（已被 2026-01-22 版本取代）
 
 ---
 
