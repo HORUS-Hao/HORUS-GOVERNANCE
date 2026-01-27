@@ -2,6 +2,13 @@
 
 ## Current Governance Status
 
+| Item | Value |
+|------|-------|
+| Baseline Version | v1.0 |
+| Current State | BASELINE_LOCKED |
+| Last Completed Phase | Phase 4 |
+| Next Phase | UNDECIDED |
+
 - Phase 0–4: COMPLETED
 - Phase 5+: PENDING (BY DESIGN)
 
