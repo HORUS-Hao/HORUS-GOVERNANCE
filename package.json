@@ -1,0 +1,10 @@
+{
+  "name": "horus-governance",
+  "version": "1.2.0",
+  "description": "HORUS-PDM Governance Scanner - 模組健康度掃描工具",
+  "scripts": {
+    "scan": "node scripts/scan-modules.js"
+  },
+  "author": "HORUS-PDM Architect",
+  "license": "UNLICENSED"
+}
