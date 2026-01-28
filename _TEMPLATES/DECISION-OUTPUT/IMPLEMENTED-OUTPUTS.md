@@ -4,7 +4,7 @@
 - Type: Mail
 - Status: SEALED
 - Version: v1.9.5
-- Commit: (pending)
+- Commit: 175520a
 - Tag: gov-mail-final-v1.9.5
 - Notes: Final-only decision channel, Risk Accepted labeled, EXPIRED_RISK support
 

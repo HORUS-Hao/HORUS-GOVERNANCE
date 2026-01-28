@@ -81,7 +81,7 @@ It is the authoritative, human-readable explanation layer for DecisionLayer beha
 - **Effective Date:** 2026-01-28
 - **Target Date:** N/A (Permanent policy)
 - **Status:** ACTIVE
-- **Related Commit / Tag:** (pending) / gov-mail-final-v1.9.5
+- **Related Commit / Tag:** 175520a / gov-mail-final-v1.9.5
 - **Notes:**
   - Expired risks display: `🟠 EXPIRED_RISK` with `Target: YYYY-MM-DD (EXPIRED)`
   - expired_count field added to DAILY_SNAPSHOTS for dashboard alerting
