@@ -1,0 +1,8 @@
+{
+  "name": "horus-governance-scanner",
+  "version": "1.5.3",
+  "description": "HORUS-PDM Governance Scanner",
+  "scripts": {
+    "scan": "node scan-modules.js"
+  }
+}

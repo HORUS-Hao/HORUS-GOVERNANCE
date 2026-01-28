@@ -1,6 +1,6 @@
 ﻿# HORUS Drive Tree Snapshot
 
-**Generated**: 2026-01-28 22:00:07
+**Generated**: 2026-01-27 22:00:04
 **Scanner Version**: v1.0.0
 **Mode**: Read-Only
 
@@ -87,29 +87,6 @@ HORUS-GOVERNANCE/
 |   |-- ARCHITECT-AUTHORIZATION-VIEW.md
 |   |-- AUTHORIZATION-STATE-MODEL.md
 |   +-- MAIL-AS-GATE-GOVERNANCE.md
-|-- BASELINE/
-|   |-- REGISTRY/
-|   |   |-- MODULE-REGISTRY.md
-|   |   +-- REQUIRED-ARTIFACTS-MATRIX.md
-|   |-- REPORTS/
-|   |   |-- REPORT-COVERAGE-DETAIL.md
-|   |   +-- REPORT-COVERAGE-SUMMARY.md
-|   |-- TEMPLATES/
-|   |   |-- TEMPLATE-CHANGELOG.md
-|   |   |-- TEMPLATE-DATA-FLOW.md
-|   |   |-- TEMPLATE-DECISIONS.md
-|   |   |-- TEMPLATE-EXCEPTIONS.md
-|   |   |-- TEMPLATE-GOVERNANCE.md
-|   |   +-- TEMPLATE-README.md
-|   |-- TYPES/
-|   |   |-- TYPE-C-Checker.md
-|   |   |-- TYPE-P-Producer.md
-|   |   |-- TYPE-R-Report.md
-|   |   +-- TYPE-T-Transform.md
-|   |-- BASELINE-LOCK.md
-|   |-- BASELINE-SPEC.md
-|   |-- NEXT-POSSIBLE-PHASES.md
-|   +-- README.md
 |-- C005/
 |   |-- ALIGNMENT/
 |   |   +-- C005-GOVERNANCE-ALIGNMENT-AUDIT-2026-01-22.md
@@ -276,12 +253,6 @@ HORUS-GOVERNANCE/
 |   |-- S005-AUTHORITY-MCD.md
 |   |-- S005-CODEGS-MODULE-BOUNDARY-INVENTORY.md
 |   +-- S005-GOVERNANCE-ALIGNMENT-AUDIT.md
-|-- schedulers/
-|   +-- run-governance-scan.bat
-|-- scripts/
-|   |-- ci-cd-scanner.js
-|   |-- package.json
-|   +-- scan-modules.js
 |-- STRATEGY/
 |   |-- C005-STRATEGY-MAPPING-SSOT-DEFINITION.md
 |   |-- PHASE5B-MINIMAL-DECISION-ACTIVATION.md
@@ -400,11 +371,8 @@ HORUS-GOVERNANCE/
 |-- GOVERNANCE-BOOTSTRAP.md
 |-- GOVERNANCE-INDEX.md
 |-- GOVERNANCE-PRINCIPLES.md
-|-- GOVERNANCE-STATE.md
-|-- package.json
 |-- README_REMOTE_POLICY.md
 |-- Registry-HORUS-PDM.gsheet
-|-- SCHEDULERS.md
 |-- SYS-000-HORUS-GOVERNANCE-CONSTITUTION.md
 |-- SYSTEM-DATA-LAYERS.md
 |-- Terminal
@@ -690,55 +658,13 @@ HORUS-DERIVED/
 |       |-- shopee/
 |       |-- yahoo/
 |       +-- README.md
-|-- R020/
-|   |-- _DERIVED_METADATA.txt
-|   |-- _ZONE_DECLARATION.txt
-|   |-- compare_result_20251219.csv
-|   |-- compare_result_latest.csv
-|   |-- R020_DQ_REVIEW_LIST_latest.csv
-|   +-- R020_PRICE_ACTION_CANDIDATES_latest.csv
-+-- reports/
-    |-- A002-GovernanceNotifier.gscript
-    |-- ci-cd-scan-report.json
-    |-- ci-cd-scan-report.md
-    |-- GOV-001-Governance-Ledger.gsheet
-    |-- governance-scan-2026-01-28-1305.json
-    |-- governance-scan-2026-01-28-1305.md
-    |-- governance-scan-2026-01-28-1305-raw.csv
-    |-- governance-scan-2026-01-28-1312.json
-    |-- governance-scan-2026-01-28-1312.md
-    |-- governance-scan-2026-01-28-1312-raw.csv
-    |-- governance-scan-2026-01-28-1313.json
-    |-- governance-scan-2026-01-28-1313.md
-    |-- governance-scan-2026-01-28-1313-raw.csv
-    |-- governance-scan-2026-01-28-1608.json
-    |-- governance-scan-2026-01-28-1608.md
-    |-- governance-scan-2026-01-28-1608-raw.csv
-    |-- governance-scan-2026-01-28-1609.json
-    |-- governance-scan-2026-01-28-1609.md
-    |-- governance-scan-2026-01-28-1609-raw.csv
-    |-- governance-scan-2026-01-28-1616.json
-    |-- governance-scan-2026-01-28-1616.md
-    |-- governance-scan-2026-01-28-1616-raw.csv
-    |-- governance-scan-2026-01-28-1645.json
-    |-- governance-scan-2026-01-28-1645.md
-    |-- governance-scan-2026-01-28-1652.json
-    |-- governance-scan-2026-01-28-1652.md
-    |-- governance-scan-2026-01-28-1652-raw.csv
-    |-- governance-scan-2026-01-28-1731.json
-    |-- governance-scan-2026-01-28-1731.md
-    |-- governance-scan-2026-01-28-1731-raw.csv
-    |-- governance-scan-2026-01-28-1801.json
-    |-- governance-scan-2026-01-28-1801.md
-    |-- governance-scan-2026-01-28-1801-raw.csv
-    |-- governance-scan-2026-01-28-1802.json
-    |-- governance-scan-2026-01-28-1802.md
-    |-- governance-scan-2026-01-28-1802-raw.csv
-    |-- governance-scan-2026-01-28-2034.json
-    |-- governance-scan-2026-01-28-2034.md
-    |-- governance-scan-2026-01-28-2034-raw.csv
-    |-- governance-scan-latest.json
-    +-- scan-history.log
++-- R020/
+    |-- _DERIVED_METADATA.txt
+    |-- _ZONE_DECLARATION.txt
+    |-- compare_result_20251219.csv
+    |-- compare_result_latest.csv
+    |-- R020_DQ_REVIEW_LIST_latest.csv
+    +-- R020_PRICE_ACTION_CANDIDATES_latest.csv
 ```
 
 ---
